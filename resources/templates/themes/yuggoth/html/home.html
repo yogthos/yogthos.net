@@ -1,0 +1,41 @@
+{% extends "/html/base.html" %}
+{% block content %}
+<div id="post">
+    <div id="post-header">
+        <h2>{{post.title}}</h2>
+        <p class="date">{{post.date|date:longDate}}</p>
+    </div>
+    <div>
+        {% if post.toc %}{{post.toc|safe}}{% endif %}
+        {{post.content|safe}}
+    </div>
+    {% if post.tags %}
+    <div id="tags">
+        <b>Tags: </b>
+        {% for tag in post.tags %}
+        <a href="{{tag.uri}}">{{tag.name}}</a>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% if disqus? %}
+    <div id="comments">
+        <a href="{{post.uri}}#disqus_thread">View Comments</a>
+    </div>
+    {% endif %}
+
+    <ul class="pager">
+        {% if post.prev %}
+        <li class="previous">
+            <a href="{{post.prev.uri}}">&laquo; last</a>
+        </li>
+        {% endif %}
+        {% if all post.prev post.next %}
+        {% endif %}
+        {% if post.next %}
+        <li class="next">
+        <a href="{{post.next.uri}}">next &raquo;</a>
+        </li>
+        {% endif %}
+    </ul>
+</div>
+{% endblock %}

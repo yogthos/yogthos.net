@@ -1,0 +1,21 @@
+{:site-title       "(iterate think thoughts)"
+ :author           "Dmitri Sotnikov"
+ :description      ""
+ :site-url         "http://yogthos.net/"
+ :post-root        "posts"
+ :page-root        "pages"
+ :tag-root         "tags"
+ :rss-name         "feed.xml"
+ :theme            "yuggoth"
+ :recent-posts     5
+ :sass-src         nil
+ :sass-dest        nil
+ :resources        ["img" "files"]
+ :disqus?          true
+ :disqus-shortname "yogthos"
+ :blog-prefix        ""
+ :post-date-format   "yyyy-MM-dd"
+ :keep-files         [".git"]
+ :ignored-files      [#"\.#.*" #".*\.swp$"]}
+
+
