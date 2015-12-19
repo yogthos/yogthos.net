@@ -2,6 +2,9 @@
  :layout :post
  :tags ["clojurescript"]}
 
+#### update: Figwheel changed recently and the new process of starting the REPL is documented on the [official Wiki](https://github.com/bhauman/lein-figwheel/wiki).
+
+
 Figwheel provides a fantastic developer experience and if you're not
 using it already I highly encourage you to give it a shot. I found that
 in most cases live code reloading is sufficient for my workflow, but
