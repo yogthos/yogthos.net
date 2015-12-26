@@ -1,6 +1,6 @@
 {:title "Trouble with AOT"
  :layout :post
- :tags ["clojurescript"]}
+ :tags ["clojure" "luminus"]}
  
 I recently ran into an interesting issue when I added the [slf4j-timbre](https://github.com/fzakaria/slf4j-timbre) dependency to a project. As soon as the dependency was added the project would fail to build and I'd see the following error:
 
