@@ -25,7 +25,7 @@ Unfortunately, Luminus dependencies require both a SLF4J compliant logger and th
 Luckily, [clojure.tools.logging](https://github.com/clojure/tools.logging) provides a SLF4J compliant API for Clojure logging. The latest release of Luminus uses `clojure.tools.logging` along with the [log4j](https://logging.apache.org/log4j/2.x/) library as the default logging implementation. It's a mature library that has excellent performance and provides a [plethora of logging appenders](https://logging.apache.org/log4j/2.x/manual/appenders.html).
 
 
-Since `log4j` can be configured using a properties file, it fits the Luminus approach of using 12 factory style configuration. The library will look for a file called `log4j.properties` on the classpath to get its default configuration. Luminus packages this file in the `resources` folder with the following configuration:
+Since `log4j` can be configured using a properties file, it fits the Luminus approach of using 12 factor style configuration. The library will look for a file called `log4j.properties` on the classpath to get its default configuration. Luminus packages this file in the `resources` folder with the following configuration:
 
 ```
 ### stdout appender
