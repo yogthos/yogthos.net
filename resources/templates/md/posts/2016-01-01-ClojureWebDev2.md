@@ -2,6 +2,13 @@
  :layout :post
  :tags ["clojure" "luminus" "book"]}
 
+
+### Beta Release Update
+
+Unfortunately, it looks like there's been a bit of editorial delay and we missed the 13th release date. The new date is set for the second of February. Apologies to everybody who's waiting for the release. 
+
+***
+
 I'm glad to report that the second edition of Web Development with Clojure is just around the corner. The beta release is planned for January the 13th, and then I'm hoping to have the final release shortly after. The second edition took a bit longer than I anticipated, but I think the wait will be worth it.
 
 ### What to Expect
