@@ -173,6 +173,10 @@ pre>code {
   line-height: 20px;
   position: relative;
 }
+.book {
+    width: 250px;
+    box-shadow: 5px 5px 3px #ddd;
+}
 put:focus {
   outline: none;
   border: none !important;

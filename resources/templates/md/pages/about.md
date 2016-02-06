@@ -23,7 +23,13 @@ build better software together. To that end I'd like share some of my projects w
 
 ### Publications
 
+<div class="book">
 [![Web Development With Clojure](http://yogthos.net/files/wdwc.png)](http://pragprog.com/book/dswdcloj/web-development-with-clojure)
+</div>
+
+<div class="book">
+[![Web Development With Clojure](http://yogthos.net/files/wdwc2.jpg)](https://pragprog.com/book/dswdcloj2/web-development-with-clojure-second-edition)
+</div>
 
 ### Contact
 
