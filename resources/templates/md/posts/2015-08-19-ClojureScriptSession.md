@@ -1,6 +1,6 @@
 {:title "ClojureScript Session Timeout"
  :layout :post
- :draft true
+ :draft? true
  :tags ["clojure"]}
  
 ```clojure
