@@ -2,8 +2,12 @@
 {% block content %}
 <div id="post">
     <div id="post-header">
-        <h2>{{post.title}}</h2>
-        <p class="date">{{post.date|date:longDate}}</p>
+      <h2>
+          <a class="post-title" href="{{post.uri}}">
+            {{post.title}}<span> </span><i class="fa fa-external-link"></i>
+          </a>
+      </h2>
+      <p class="date">{{post.date|date:longDate}}</p>
     </div>
     <div>
         {% if post.toc %}{{post.toc|safe}}{% endif %}

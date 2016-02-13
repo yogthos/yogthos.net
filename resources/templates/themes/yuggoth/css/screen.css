@@ -290,6 +290,10 @@ body,
   color: #f7f7f7;
   text-decoration: none;
 }
+.post-title {
+  color: #333;
+  underline: none;
+}
 
 nav {
   background: #333;
