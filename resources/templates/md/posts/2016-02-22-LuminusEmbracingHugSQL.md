@@ -97,7 +97,8 @@ HugSQL also supports additional syntax within its queries. For example, if we wa
 
 ```sql
 -- :name add-users! :! :n
--- :doc add multiple users INSERT INTO users
+-- :doc add multiple users
+INSERT INTO users
 (id, pass)
 VALUES :t*:users
 ```
@@ -112,7 +113,7 @@ The syntax for for in-list queries is also a bit different from Yesql. The SQL q
 
 ```sql
 -- :name find-users :? :*
--- find users with a matching ID
+-- :doc find users with a matching ID
 SELECT *
 FROM users
 WHERE id IN (:v*:ids)
