@@ -9,16 +9,18 @@ In this post we’ll see see how to create an app with multiple pages and how we
 
 The app will be a guestbook with a page that shows a list of users and another page that allows new users to sign in. We’ll use the project from the last post as the base for this tutorial.
 
-First thing that we have to do is to add the `[secretary "1.2.0"]` dependency to our `project.clj`. Next, let’s refactor our namespaces in `src-cljs` as follows:
+***update*** the tutorial has been updated to the latest version of Luminus, you'll need to create a new project to follow along using `lein new luminus guestbook +cljs`
+
+First thing that we have to do is to add the `[secretary "1.2.3"]` dependency to our `project.clj`. Next, let’s refactor our namespaces in `src/cljs` as follows:
 
 ```
-src-cljs
-  └ guestbook
-    └ core.cljs
-    └ session.cljs
-    └ pages
-      └ guest.cljs
-      └ guest_list.cljs
+src
+  └ cljs
+    └ guestbook
+      └ core.cljs
+      └ pages
+        └ guest.cljs
+        └ guest_list.cljs
 ```
 
 * The `core` namespace will act as the entry point for the client.
