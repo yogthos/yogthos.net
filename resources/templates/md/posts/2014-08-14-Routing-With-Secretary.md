@@ -36,26 +36,9 @@ Since we refactored the namespaces we’ll also need to update our `app.html` te
 
 In our example, the session will track the currently selected page and the saved documents.
 
-We’ll model our session on [lib-noir](https://github.com/noir-clojure/lib-noir)'s session and use an atom to store its state that will be manipulated by the accessor functions.
+We’ll use the [reagent-utils](https://github.com/reagent-project/reagent-utils/blob/master/src/reagent/session.cljs) session. The session is simply a Ragent atom
+with some helper functions around it.
 
-```clojure
-(ns guestbook.session
-  (:refer-clojure :exclude [get])
-  (:require [reagent.core :as reagent :refer [atom]]))
-
-(def state (atom {}))
-
-(defn get [k & [default]]
-  (clojure.core/get @state k default))
-
-(defn put! [k v]
-  (swap! state assoc k v))
-
-(defn update-in! [ks f & args]
-  (clojure.core/swap!
-    state
-    #(apply (partial update-in % ks f) args)))
-```
 
 ### Listing Guests
 
@@ -63,7 +46,7 @@ Let’s open up the `guest-list` namespace and add the following code there.
 
 ```clojure
 (ns guestbook.pages.guest-list
-  (:require [guestbook.session :as session]
+  (:require [reagent.session :as session]
             [clojure.string :as s]
             [reagent.core :as reagent :refer [atom]]
             [secretary.core :refer [dispatch!]]))
@@ -85,41 +68,59 @@ The namespace will contain a page that lists the guests that are currently in th
 
 ### Adding Routes
 
-The `core` namespace will specify the list of routes and provide an `init!` function to set the current page and render it when the application loads. 
+The `core` namespace will specify the list of routes and provide an `init!` function to set the current page and render it when the application loads.
 
 ```clojure
 (ns guestbook.core
- (:require [guestbook.session :as session]
-           [guestbook.pages.guest-list
+  (:require [reagent.core :as r]
+            [reagent.session :as session]
+            [secretary.core :as secretary :include-macros true]
+            [goog.events :as events]
+            [goog.history.EventType :as HistoryEventType]
+            [guestbook.ajax :refer [load-interceptors!]]
+            [guestbook.pages.guest-list
             :refer [guest-list-page]]
-           [guestbook.pages.guest :refer [guest-page]]
-           [reagent.core :as reagent :refer [atom]]
-           [secretary.core :as secretary
-            :include-macros true :refer [defroute]]))
-
-(defroute "/" []
-  (session/put! :current-page guest-list-page))
-(defroute "/sign-in" []
-  (session/put! :current-page guest-page))
-
-(def current-page (atom nil))
+           [guestbook.pages.guest :refer [guest-page]])
+  (:import goog.History))
 
 (defn page []
   [(session/get :current-page)])
 
-(defn init! []
-  (secretary/set-config! :prefix "#")
-  (session/put! :current-page guest-list-page)
-  (reagent/render-component
-   [page]
-   (.getElementById js/document "app")))
+;; -------------------------
+;; Routes
+(secretary/set-config! :prefix "#")
 
-(init!)
+(secretary/defroute "/" []
+  (session/put! :current-page guest-list-page))
+
+(secretary/defroute "/sign-in" []
+  (session/put! :current-page guest-page))
+
+;; -------------------------
+;; History
+;; must be called after routes have been defined
+(defn hook-browser-navigation! []
+  (doto (History.)
+        (events/listen
+          HistoryEventType/NAVIGATE
+          (fn [event]
+              (secretary/dispatch! (.-token event))))
+        (.setEnabled true)))
+
+;; -------------------------
+;; Initialize app
+(defn mount-components []
+  (r/render [#'page] (.getElementById js/document "app")))
+
+(defn init! []
+  (load-interceptors!)
+  (hook-browser-navigation!)
+  (mount-components))
 ```
 
 As we can see above, `secretary` uses Compojure inspired syntax that should look very familiar to anybody who's dabbled in Clojure web development.
 
-In our case the routes will simply set the appropriate page in the session when called. The `render-component` function will then be triggered by the atom update and render the page for us.
+In our case the routes will simply set the appropriate page in the session when called. The `render` function will then be triggered by the atom update and render the page for us.
 
 ### Signing In
 
@@ -143,7 +144,7 @@ Using `get/set!` functions to access the atoms, as we’re doing in this example
 ```clojure
 (ns guestbook.pages.guest
   (:refer-clojure :exclude [get])
-  (:require [guestbook.session :as session]
+  (:require [reagent.session :as session]
             [reagent.core :as reagent :refer [atom]]
             [secretary.core :refer [dispatch!]]
             [ajax.core :refer [POST]]))
@@ -202,7 +203,7 @@ As a final touch, we can add support for managing history using `goog.events` to
 
 ```clojure
 (ns guestbook.core
- (:require [guestbook.session :as session]
+ (:require [reagent.session :as session]
            [guestbook.pages.guest-list
             :refer [guest-list-page]]
            [guestbook.pages.guest :refer [guest-page]]
@@ -219,6 +220,16 @@ As a final touch, we can add support for managing history using `goog.events` to
       (fn [event]
         (secretary/dispatch! (.-token event))))
     (.setEnabled true)))
+
+```
+
+The function is then run by the `init!` function when the app loads:
+
+```clojure
+(defn init! []
+  (load-interceptors!)
+  (hook-browser-navigation!)
+  (mount-components))
 ```
 
 As usual, the source for the project can be found [here](https://github.com/yogthos/reagent-secretary-example).
