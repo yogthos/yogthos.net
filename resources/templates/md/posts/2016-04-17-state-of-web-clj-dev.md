@@ -44,7 +44,7 @@ Luminus makes it trivial to swap things like the underlying HTTP server, templat
 
 Arachne has an ambitious goal to provide a way to specify the application using a data driven approach. The idea being that this makes it easier to swap different components in the existing project.
 
-I’ve considered similar approaches for Luminus, but ultimately decided against it. First, I think that Ring middleware already provides an extremely powerful mechanism for injecting functionality in the request handling pipeline. This is where most of the changes will happen in your project. You might decide to swap out or change things like session handling middleware as your project evolves.
+I’ve considered similar approaches for Luminus, but ultimately decided against that. First, I think that Ring middleware already provides an extremely powerful mechanism for injecting functionality in the request handling pipeline. This is where most of the changes will happen in your project. You might decide to swap out or change things like session handling middleware as your project evolves.
 
 However, my experience is that in most cases it’s not possible to simply swap a component such as the database for a different one without having to change some code in the application.
 
