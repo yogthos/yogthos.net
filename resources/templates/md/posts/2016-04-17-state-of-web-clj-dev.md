@@ -8,7 +8,7 @@ Luke says that the motivation for the project is that there is no simple way to 
 
 Luke goes as far as to say that starting a new Clojure web application with all the parts together, that's actually deployable is a one to three months process.
 
-Simplifying this process is precisely the motivation behind [Luminus](http://www.luminusweb.net/). In fact, Luminus, and other frameworks such as [Hoplon](https://hoplon.io/), have been filling this exact niche for years now. While I’m not as familiar with Hoplon, I will focus on contrasting the stated goals behind Arachne and the goals for Luminus.
+Simplifying this process is precisely the [motivation](https://www.youtube.com/watch?v=JKoaG4kSyxs&t=14m53s) behind [Luminus](http://www.luminusweb.net/). In fact, Luminus, and other frameworks such as [Hoplon](https://hoplon.io/), have been filling this exact niche for years now. While I’m not as familiar with Hoplon, I will focus on contrasting the stated goals behind Arachne and the goals for Luminus.
 
 First thing I’d like to address is the claim that it takes a long time to create a web application following best practices. Creating a new Luminus app is as easy as running `lein new luminus myapp` in the terminal. Perhaps what Luke meant was that creating an application using his preferred stack and defaults takes a long time.
 
