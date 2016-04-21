@@ -44,7 +44,7 @@ Luminus makes it trivial to swap things like the underlying HTTP server, templat
 
 Arachne has an ambitious goal to provide a way to specify the application using a data driven approach. The idea being that this makes it easier to swap different components in the existing project.
 
-I’ve considered similar approaches for Luminus, but ultimately decided against it. First, I think that Ring middleware already provides an extremely powerful mechanism for injecting functionality in the request handling pipeline. This is where most of the changes will happen in your project. You might decide to swap out or change things like session handling middleware as your project evolves.
+I’ve considered similar approaches for Luminus, but ultimately decided against that. First, I think that Ring middleware already provides an extremely powerful mechanism for injecting functionality in the request handling pipeline. This is where most of the changes will happen in your project. You might decide to swap out or change things like session handling middleware as your project evolves.
 
 However, my experience is that in most cases it’s not possible to simply swap a component such as the database for a different one without having to change some code in the application.
 
@@ -60,7 +60,7 @@ For this reason, I firmly believe that such design decisions should be left up t
 
 ### Conclusion
 
-At the end of the day, Luminus isn’t based just on my experience, but also that of the contributors and the users over the years.. Arachne will be informed by Luke’s experience and that necessarily means that it will provide a new and interesting way to put together Clojure web applications.
+At the end of the day, Luminus isn’t based just on my experience, but also that of the contributors and the users over the years. Arachne will be informed by Luke’s experience and that necessarily means that it will provide a new and interesting way to put together Clojure web applications.
 
 Overall, I think it will be great to see a new web framework for Clojure. There is plenty of room for alternatives to Luminus, and Arachne could explore many areas that aren't the focus for Luminus at the moment. Therefore, I wholeheartedly urge you to support the Kickstarter so that we can have more choices for Clojure web development.
 
