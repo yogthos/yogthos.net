@@ -86,7 +86,7 @@ In order to get around that problem we can use the `:on-mouse-enter` and `:on-mo
                 (reset! expanded? false))} n])])]]))
 ```
 
-The new approach works as intended. The table will now close whenever the user clicks outside it.
+The new approach works as intended. The table will now close whenever the user clicks outside it. You can see this in action [here](http://cljsfiddle.com/#gist=639bcbe8d328da071713729a714b7f65).
 
 Hopefully this trick will save you some time creating these types of components in Reagent.
 
