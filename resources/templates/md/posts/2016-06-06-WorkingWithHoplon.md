@@ -131,7 +131,7 @@ Now, let's update the items to be rendered in the list a bit nicer. We'll write 
           (h/li todo)))))
 ```
 
-The element uses the Hoplon `for-tpl` macro to run through the elements in the list. The macro is used by Hoplon to map dynamically sized collections to DOM nodes. With the element in place, we can update our `home` element to display a nice HTML list:
+The element uses the Hoplon `for-tpl` macro to run through the elements in the list. The macro is used to map dynamically sized collections to DOM nodes. With the element in place, we can update our `home` element to display a nice HTML list:
 
 ```clojure
 (h/defelem home []
