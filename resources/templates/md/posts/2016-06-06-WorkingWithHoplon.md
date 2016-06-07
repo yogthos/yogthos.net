@@ -4,11 +4,9 @@ A [recent discussion of Hoplon vs React](https://dl.dropboxusercontent.com/u/123
 
 The main selling point for Hoplon is that it's simple. Hoplon doesn't use a virtual DOM, and thus it doesn't have a component lifecycle. One major benefit of this approach is in making it natural to use with existing Js libraries that expect to work with the browser DOM.
 
-An example of this would be something like using a jQuery date picker widget. With Reagent, we'd have to use the lifecycle hooks, and make sure that the component is mounted in the browser DOM before the library is called. Conversely, we may need to consider the case of the component updating separately. While, it's not difficult to reason about in most cases, it does introduce some mental overhead.
+An example of this would be something like using a [jQuery date picker widget](https://github.com/cljsjs/packages/tree/master/jquery-daterange-picker). With Reagent, we'd have to use the lifecycle hooks, and make sure that the component is mounted in the browser DOM before the library is called. Conversely, we may need to consider the case of the component updating separately. While, it's not difficult to reason about in most cases, it does introduce some mental overhead. Using the same date picker in Hoplon can be seen [here](https://github.com/hoplon/jquery.daterangepicker/blob/master/src/hoplon/jquery/daterangepicker.cljs.hl).
 
-However, while I found the idea of Hoplon interesting, I've never gave it a serious look due to the fact that it looked to be a monolithic stack.
-
-When you read Hoplon documentation, it's easy to get the impression that it has to be used with Boot, you have to use special `.hl` files to define ClojureScript, and you're expected to work with its server implementation.
+However, while I found the idea of Hoplon interesting, I've never gave it a serious look due to the fact that it looked to be a monolithic stack. When you read Hoplon documentation, it's easy to get the impression that it has to be used with Boot, you have to use special `.hl` files to define ClojureScript, and you're expected to work with its server implementation.
 
 This all can be appealing if you're looking for a full-stack solution where decisions have been made for you, but it's a bit of a deterrent for somebody who already has a preferred workflow and uses other tools such as Figwheel and Leiningen.
 
@@ -16,7 +14,7 @@ After having a discussion with Micha [on Reddit](https://www.reddit.com/r/Clojur
 
 ## The Setup
 
-I decided to use the [reagent-template](https://github.com/reagent-project/reagent-template) that I maintain as the base for he project by running the following command in the terminal:
+I used the [reagent-template](https://github.com/reagent-project/reagent-template) that I maintain as the base for he project by running the following command in the terminal:
 
 ```
 lein new reagent hoplon-app
@@ -72,7 +70,7 @@ lein figwheel
 
 As you can see the main difference so far is that we mount the Hoplon DOM using plain jQuery call, and the elements are defined using Hoplon helper macros.
 
-Let's see how we can add a bit of state to our Hoplon app. Hoplon state management is handled by the [Javelin](https://github.com/hoplon/javelin) library. It uses a similar concept to the Reagent atom where we can define cells, and then whenever the state of the cells changes any elements that are looking at the value of the cell will be notified.
+Let's see how we can add a bit of state to our Hoplon app. Hoplon state management is handled by the [Javelin](https://github.com/hoplon/javelin) library. It uses a similar concept to the Reagent atom where we can define cells, and then whenever the state of the cells changes any elements that are looking at its value will be notified.
 
 We'll create a simple to-do list to illustrate how this works. First, we need to create a cell to hold the data. We'll add the following code at the top of the namespace to do that:
 
@@ -90,9 +88,7 @@ The above code will define a Javelin cell that contains a vector with the string
     (h/p (cell= todo-items))))
 ```
 
-The `cell=` call is reactive and whenever the state of the cell changes the paragraph will be repainted to with its current value.
-
-We can now add some code to add new items to the to-do list:
+The `cell=` call is reactive and whenever the state of the cell changes the paragraph will be repainted to with its current value. We can now add some code to add new items to the to-do list:
 
 ```clojure
 (h/defelem add-todo []
@@ -107,9 +103,9 @@ We can now add some code to add new items to the to-do list:
                 (h/text "Add #~{(inc (count todo-items))}")))))
 ```
 
-The above code should be fairly familiar to anybody who's used Reagent. We define a local state in a `let` binding. We then create a `div` that contains an `input` and a `button`. The `input` displays the value of the `new-item` cell and updates it in its `:change` event. Meanwhile, the button will swap the `todo-items` cell and add the value of the new item, then reset it to an empty string.
+The above code should be fairly familiar to anybody who's used Reagent. We define a local state in a `let` binding and create a `div` that contains an `input` and a `button`. The `input` displays the value of the `new-item` cell and updates it in its `:change` event. Meanwhile, the button will swap the `todo-items` cell and add the value of the new item, then reset it to an empty string.
 
-Notice that the button text displays the current item count. This is accomplished by Hoplon `#~` helper macro that allows us to easily display cell values within strings.
+Notice that the button text displays the current item count. This is accomplished by Hoplon `#~` helper that allows us to easily display cell values within strings.
 
 We should now be able to update our `home` element as follows to have the `add-todo` component show up on the page:
 
@@ -135,9 +131,7 @@ Now, let's update the items to be rendered in the list a bit nicer. We'll write 
           (h/li todo)))))
 ```
 
-The element uses the Hoplon `loop-tpl` macro to run through the elements in the list. The macro is used by Hoplon to map dynamically sized collections to DOM nodes.
-
-With the element in place, we can update our `home` element to display a nice HTML list:
+The element uses the Hoplon `loop-tpl` macro to run through the elements in the list. The macro is used by Hoplon to map dynamically sized collections to DOM nodes. With the element in place, we can update our `home` element to display a nice HTML list:
 
 ```clojure
 (h/defelem home []
