@@ -12,7 +12,7 @@ This all can be appealing if you're looking for a full-stack solution where deci
 
 After having a discussion with Micha [on Reddit](https://www.reddit.com/r/Clojure/comments/4mi64q/hoplon_vs_react/), I realized that this wasn't the case and decided to give Hoplon another shot.
 
-## The Setup
+### The Setup
 
 I used the [reagent-template](https://github.com/reagent-project/reagent-template) that I maintain as the base for he project by running the following command in the terminal:
 
