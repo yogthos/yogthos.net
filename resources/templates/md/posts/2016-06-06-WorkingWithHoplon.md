@@ -148,7 +148,7 @@ We should now see a list of items displayed that will get updated as we add item
 
 I was very pleasantly surprised by how easy it was to use Hoplon in a project setup with Leiningen and Figwheel. The semantics that Hoplon provides are very similar to Reagent, and are arguably simpler since there's no need to worry about the component lifecycle.
 
-The one aspect of Reagent that I prefer is that the UI is defined declaratively using the Hiccup syntax. This makes it possible to manipulate UI elements as plan data. However, I don't think that using functions to define the UI is a deal breaker.
+The one aspect of Reagent that I prefer is that the UI is defined declaratively using the Hiccup syntax. This makes it possible to manipulate UI elements as plain data. However, I don't think that using functions to define the UI is a deal breaker.
 
 Overall, I think that Hoplon is often overlooked when ClojureScript UI libraries are considered, and this is very unfortunate. It's a solid library that provides clean and simple semantics to the user.
 
