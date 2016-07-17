@@ -36,9 +36,13 @@ unable to find valid certification path to requested target
 ...
 ```
 
-One way we could work around this problem would be to add the certificate to the local store. However, this has to be done manually on each machine that the code will run on.
+One way we could work around this problem would be to add the certificate to the local store. This is the proper solution that should be used in the vast majority of cases.
 
-Instead, let's take a look at how we can disable the certificate check for a specific connection. We'll first have to create a proxy `TrustManager`, then use it to create a socket factory for our connection as seen in the following code:
+However, there are situations where this approach isn't possible. I've run into many situations working in the enterprise where SSL was misconfigured, and the application would need to connect to an intranet service over such a connection. At the same time I had no control over the deployment environment and wasn't able to manage the keystore there.
+
+An alternative approach is to replace the default certificate check for a specific connection with a custom one. Let's see take a look at how this can be accomplished.
+
+We'll first have to create a proxy `TrustManager`, then use it to create a socket factory for our connection as seen in the following code:
 
 ```clojure
 (defn set-socket-factory [conn]
@@ -54,6 +58,8 @@ Instead, let's take a look at how we can disable the certificate check for a spe
 ```
 
 The custom socket factory will use the `X509TrustManager` proxy that we provide and rely on it for validation. We can simply return `nil` from each of the validation methods to skip the certificate validation.
+
+Note that while we're skipping validation entirely in the above example, we'd likely want to supply a custom validator that validates against an actual certificate in practice.
 
 Next, let's update the `read-image` function to set the custom socket factory for the connection before trying to read from it:
 
