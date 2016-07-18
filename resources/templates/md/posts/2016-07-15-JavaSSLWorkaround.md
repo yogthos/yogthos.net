@@ -40,7 +40,7 @@ One way we could work around this problem would be to add the certificate to the
 
 However, there are situations where this approach isn't possible. I've run into many situations working in the enterprise where SSL was misconfigured, and the application would need to connect to an intranet service over such a connection. At the same time I had no control over the deployment environment and wasn't able to manage the keystore there.
 
-An alternative approach is to replace the default certificate check for a specific connection with a custom one. Let's see take a look at how this can be accomplished.
+An alternative approach is to replace the default certificate check for a specific connection with a custom one. Let's take a look at how this can be accomplished.
 
 We'll first have to create a proxy `TrustManager`, then use it to create a socket factory for our connection as seen in the following code:
 
