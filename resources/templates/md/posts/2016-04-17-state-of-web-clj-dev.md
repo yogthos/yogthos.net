@@ -1,4 +1,4 @@
-{:title "The State of Clojure Web Development", :layout :post, :tags [“luminus” “arachne”]}
+{:title "The State of Clojure Web Development", :layout :post, :tags ["luminus" "arachne"]}
 
 The Kickstarter for the [Arachne](https://www.kickstarter.com/projects/1346708779/arachne-rapid-web-development-for-clojure) framework was just announced. I think this is very exciting, and I sincerely hope that it will be successful. There is plenty of room for frameworks in the Clojure web application domain. However, I also think that the pitch in the video severely misrepresents the current state of Clojure web development.
 
