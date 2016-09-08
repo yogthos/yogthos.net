@@ -4,7 +4,7 @@
  
 A [recent post](https://hashrocket.com/blog/posts/websocket-shootout) compared WebSocket server performance in Clojure, C++, Elixir, Go, NodeJS, and Ruby. Chris Allen wrote a [nice follow-up post](http://bitemyapp.com//posts/2016-09-03-websocket-shootout-haskell.html) where he implemented the benchmark using Haskell.
 
-The initial results looked extremely favorable for Haskell. However, it turned out that the Haskell implementation failed to deliver messages reliably, [dropping 98% of the messages it received](https://github.com/hashrocket/websocket-shootout/pull/14). What's interesting is that this is exactly the kind of behavior we would expect Haskell type system to prevent from happening. So, how did the fact that messages were being dropped slip by completely undetected.
+The initial results looked extremely favorable for Haskell. However, it turned out that the Haskell implementation failed to deliver messages reliably, [dropping 98% of the messages it received](https://github.com/hashrocket/websocket-shootout/pull/14). What's interesting is that this is exactly the kind of behavior we would expect Haskell type system to prevent from happening. So, how did the fact that messages were being dropped slip by completely undetected?
 
 The answer is that Haskell provides escape hatches from its type system, and these are often used in practice to achieve reasonable performance. When we look at code in the [unagi-chan](https://github.com/jberryman/unagi-chan) library used in the Haskell implementation, we can see that it uses `unsafeInterleaveIO` to get the channel contents.
 
