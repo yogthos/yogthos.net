@@ -40,6 +40,8 @@ To the best of my knowledge nobody knows whether one approach is strictly more e
 
 One interesting approach is to generate types from tests [as seen in recent version of Typed Clojure](https://github.com/typedclojure/auto-annotation). Using tests to drive type generation has the potential to offer the best of both worlds. We can work with a dynamic language, and offload the work of figuring out the type relationships to a library. As long as we're diligent about writing tests, we get the types for free.
 
+Another powerful tool for writing robust code is the REPL. When it's integrated with the editor, testing code as you write it becomes very natural. It's quite common for me to test functions as I develop them, then extract the REPL session into a test suite for the feature I'm working on.
+
 ### Takeaways
 
 Even a strong type system, such as one found in Haskell, provides a very weak specification in practice. Just because the code compiles doesn't mean it's actually doing what was intended.
