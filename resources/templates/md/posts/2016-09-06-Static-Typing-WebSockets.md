@@ -44,6 +44,8 @@ One interesting approach is to generate types from tests [as seen in recent vers
 
 Even a strong type system, such as one found in Haskell, provides a very weak specification in practice. Just because the code compiles doesn't mean it's actually doing what was intended.
 
+The type system does not help debugging many real world problems. The code in this benchmark worked as expected under small load, and started exhibiting errors when it was stress tested.
+
 The ecosystem around the language is an important factor when it comes to productivity. When we use mature and battle tested libraries, we're much less likely to be surprised by their behavior.
 
 Tests are ultimately the only practical way to provide a specification for the application. Behaviors that are easily tested can be difficult or impossible to encode using a type system.
