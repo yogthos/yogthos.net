@@ -14,9 +14,11 @@ While the problems I outline with the unsafe operations are still present, it's 
 
 If anything, I think this bolsters the argument for the importance of a mature ecosystem and specification testing.
 
----
+<hr>
 
-The answer is that Haskell provides escape hatches from its type system, and these are often used in practice to achieve reasonable performance. When we look at code in the [unagi-chan](https://github.com/jberryman/unagi-chan) library used in the Haskell implementation, we can see that it uses `unsafeInterleaveIO` to get the channel contents.
+### Type system escape hatches
+
+Haskell provides escape hatches from its type system, and these are often used in practice to achieve reasonable performance. When we look at code in the [unagi-chan](https://github.com/jberryman/unagi-chan) library used in the Haskell implementation, we can see that it uses `unsafeInterleaveIO` to get the channel contents.
 
 This is an example of an escape hatch that bypasses the type checker entirely. While Haskell is conceptually a pure language, the internal GHC implementation is imperative in nature. GHC runtime evaluates impure functions that produce side effects making the order of evaluation important. Functions like `unsafeInterleaveIO` expose the impure runtime to the user, and open the gate for all the types of errors we're familiar with from imperative languages.
 
