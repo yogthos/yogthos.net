@@ -6,6 +6,16 @@ A [recent post](https://hashrocket.com/blog/posts/websocket-shootout) compared W
 
 The initial results looked extremely favorable for Haskell. However, it turned out that the Haskell implementation failed to deliver messages reliably, [dropping 98% of the messages it received](https://github.com/hashrocket/websocket-shootout/pull/14). What's interesting is that this is exactly the kind of behavior we would expect Haskell type system to prevent from happening. So, how did the fact that messages were being dropped slip by completely undetected?
 
+#### update
+
+As a couple of people helpfully pointed out, the problem was not in fact caused by using unsafe functions. It's simply a type of error that would not be caught by the Haskell type system in general.
+
+While the problems I outline with the unsafe operations are still present, it's clearly possible for serious problems to slip by even when you're not using them.
+
+If anything, I think this bolsters the argument for the importance of a mature ecosystem and specification testing.
+
+---
+
 The answer is that Haskell provides escape hatches from its type system, and these are often used in practice to achieve reasonable performance. When we look at code in the [unagi-chan](https://github.com/jberryman/unagi-chan) library used in the Haskell implementation, we can see that it uses `unsafeInterleaveIO` to get the channel contents.
 
 This is an example of an escape hatch that bypasses the type checker entirely. While Haskell is conceptually a pure language, the internal GHC implementation is imperative in nature. GHC runtime evaluates impure functions that produce side effects making the order of evaluation important. Functions like `unsafeInterleaveIO` expose the impure runtime to the user, and open the gate for all the types of errors we're familiar with from imperative languages.
