@@ -259,7 +259,7 @@ This brings us to the view portion of the architecture. The view aggregates the 
 
 (defn form-row [view path]
   [:div.row>div.col-md-12
-   (create-widget path)])
+   (create-widget view path)])
    
 (defn demographics [view]
   [:div
