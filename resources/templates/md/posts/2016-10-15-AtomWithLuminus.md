@@ -6,31 +6,42 @@ There are many editors and IDEs available for Clojure today. The most popular on
 
 Good news is that you don't have to learn a complex environment to get started. This post will walk you through the steps of configuring [Atom editor](https://atom.io/) editor to work with a [Luminus](http://www.luminusweb.net/) project. We'll see how to configure Atom for editing Clojure code and how to connect it to the remote REPL started by the Luminus app for interactive development.
 
+### Prerequisites
+
+You'll need the following installed to follow along with this post:
+
+* [OpenJDK](http://www.azul.com/downloads/zulu/)
+* [Leiningen](http://leiningen.org/)
+* [Atom](https://atom.io/)
+
 ### Configuring Atom
 
-At the very minimum you should install either [parinfer](https://atom.io/packages/parinfer) or [lisp-paredit](https://atom.io/packages/lisp-paredit) package for structural editing, and [proto-repl](https://atom.io/packages/proto-repl) to connect to the application REPL.
+Let's take a look at the bare minimum Atom configuration for working with Clojure. Once you're up and running, you may with to look [here](https://gist.github.com/jasongilman/d1f70507bed021b48625) for a more advanced configuration. We'll start by installing the following packages:
 
-The main value of a structural editor is in eliminating the need to manually balance parens. It takes a bit of getting used to, but it will make working with Clojure a lot more pleasant in the long run.
+* [parinfer](https://atom.io/packages/parinfer) or [lisp-paredit](https://atom.io/packages/lisp-paredit) package for structural editing
+* [proto-repl](https://atom.io/packages/proto-repl) to connect to a Clojure REPL
+
+### Structural Editing
+
+A structural editor understands the structure of Clojure code and provides shortcuts for manipulating s-expressions instead of lines of text. It also eliminates the need to manually balance the parens. This takes a bit of getting used to, but it will make working with Clojure a lot more pleasant in the long run.
 
 #### Parinfer
 
-The `parinfer` mode will attempt to automatically infer the necessary parens based on indentation. This mode has a gentle learning curve and attempts to get our of your way as much as possible. You can read more about how it works [here](https://shaunlebron.github.io/parinfer/#introduction).
+The `parinfer` mode will attempt to automatically infer the necessary parens based on the indentation. This mode has a gentle learning curve and attempts to get our of your way as much as possible. You can read more about how it works [here](https://shaunlebron.github.io/parinfer/#introduction).
 
 #### Paredit
 
-The `paredit` mode takes a bit more getting used to, but provides you with precise control over code structure. When you add an opening a paren, then a matching closing paren is added automatically. The cursor is placed inside the parens so that you can start typing the inner content. Paredit will also prevent you you from deleting parens unless you have an empty pair. 
+The `paredit` mode takes a bit more getting used to, but provides you with precise control over code structure. Whenever you add a peren, a matching closing paren will be inserted automatically. Paredit will also prevent you you from deleting parens unless you have an empty pair. 
 
-When you select an expression, and add a paren, then the expression will be wrapped with the outer parens. The package also provides a handy `ctrl-w` shortcut that will extend the selection by expression. This is the recommended way to select code as you don't have to manually match the start and end of an expression when selecting.
+The package also provides a handy `ctrl-w` shortcut that will extend the selection by s-expression. This is the recommended way to select code as you don't have to manually match the start and end of an expression when selecting.
 
-#### REPL
+### The REPL
 
 The REPL is an essential tool for working with Clojure. When integrated with the editor, it allows running any code that you write directly in the application.
 
-These are all the packages you need for a minimal Clojure editing environment. You may also wish to take a look [here](https://gist.github.com/jasongilman/d1f70507bed021b48625) for a more advanced configuration after you get up and running.
+#### Connecting the REPL
 
-### Connecing the REPL
-
-We'll create a new Luminus project with an embedded database by running the following command:
+We'll create a new Luminus project with SQLite database support by running the following command:
 
     lein new luminus myapp +sqlite
 
@@ -59,12 +70,13 @@ Let's navigate to the `myapp.routes.home` namespace and try to run some of the d
             [compojure.core :refer [defroutes GET]]
             [ring.util.http-response :as response]
             [clojure.java.io :as io]
+            ;; add a reference to the db namespace
             [myapp.db.core :as db]))
 ```
 
-Once we've done that, we'll need to reload `myapp.routes.home` namespace. To do that we'll need to send the code from the editor to the REPL for evaluation. There are a few commands for doing this.
+Once we've done that, we'll need to reload `myapp.routes.home` namespace. To do that we'll need to send the code from the editor to the REPL for evaluation.
 
-I recommend starting by using the `ctrl-alt-, B` shortcut that sends the top-level block of code to the REPL for execution. Place the cursor inside the `ns` declaration and hit `ctrl-alt-, B` to send it to the REPL. We can see that the REPL displays the code that was sent to it along with the result:
+There are a few commands for doing this. I recommend starting by using the `ctrl-alt-, B` shortcut that sends the top-level block of code to the REPL for execution. Place the cursor inside the `ns` declaration and hit `ctrl-alt-, B` to send it to the REPL. We can see that the REPL displays the code that was sent to it along with the result:
 
 ![](/img/atom/send-to-repl.png)
 
@@ -78,7 +90,7 @@ The result should look as follows:
 
 ![](/img/atom/atom-start-db.png)
 
-Now that the database is started, let's add a user to it by running the following code in the REPL:
+With the database is started, let's add a user to it by running the following code in the REPL:
 
 ```clojure
 (db/create-user!
@@ -109,7 +121,7 @@ We can see that the user record exists in the database:
 
 As you can see, the code that we run in the REPL executes in the context of the application and has access to all the resources and the application state. Let's take a closer look at how this helps us during development.
 
-You might have noticed that the records we get back from the database use the `_` character as word separator. Meanwhile, idiomatic Clojure code uses the `-` character. Let's write a couple of functions to automatically transform the key names in the results.
+You might have noticed that the records we get back from the database use the `_` character as word separator. Meanwhile, idiomatic Clojure code uses the `-` character. Let's write a couple of functions to transform the key names in the results.
 
 A Clojure map represents its entities as vectors containing key-value pairs. We'll start by writing a function to rename underscores to dashes in map entries:
 
@@ -118,14 +130,14 @@ A Clojure map represents its entities as vectors containing key-value pairs. We'
   [(-> k name (.replaceAll "_" "-") keyword) v])
 ```
 
-We'll load the function in the namespace by placing the cursor anywhere inside it and hitting `ctrl-alt-, B` to load it. We can now run this function in the REPL to see that it works:
+We'll load the function in the namespace by placing the cursor anywhere inside it and hitting `ctrl-alt-, B` to load it. Let's run this function in the REPL to see that it works:
 
 ```clojure
 (clojurize [:first_name "Bob"])
 =>[:first-name "Bob"]
 ```
 
-We can see that the result is what we expect. Next, let's write a function to rename the keys in a map as follows:
+We can see that the result is what we expect. Next, let's write a function to rename the keys in a map:
 
 ```clojure
 (defn clojurize-keys [m]
@@ -151,7 +163,7 @@ We see that the result is the translated map that we want:
  :pass "secret"}
 ```
 
-Now that we have a nicely formatted user result, let's add a route to query it in the browser:
+Now that we have a nicely formatted result, let's add a route to query it in the browser:
 
 ```clojure
 (defroutes home-routes
@@ -167,4 +179,4 @@ We can now navigate to `http://localhost:3000/user/foo` and see the user data.
 
 ### Conclusion
 
-That's all there is to it. While this setup is fairly minimal, it will let you play with a lot of Clojure features without having to spend practically any time learning and configuring an editor.
+That's all there is to it. While this setup is fairly minimal, it will let you play with a lot of Clojure features without having to spend practically any time learning and configuring an editor. 
