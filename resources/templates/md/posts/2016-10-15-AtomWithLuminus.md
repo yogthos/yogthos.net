@@ -56,7 +56,11 @@ We're now ready to start the app in development mode:
 
 The app will start the nREPL server on `localhost:7000` once it loads. Let's open the project in Atom and connect to the nREPL instance.
 
-The default keybinding for connecting to the nREPL is `ctrl-alt-, y` on Windows/Linux and `cmd-alt-, y` on OS X. This should pop up a dialog asking for the host and the port. Enter `7000` as the port and hit `enter`. If everything went well the REPL should now be connected to your project.
+The default keybinding for connecting to the nREPL is `ctrl-alt-, y` on Windows/Linux and `cmd-alt-, y` on OS X. This should pop up a dialog asking for the host and the port.
+
+![](/img/atom/atom-nrepl.png)
+
+Enter `7000` as the port and hit `enter`. If everything went well the REPL should now be connected to your project.
 
 Once the REPL is connected we can try to evaluate some code in it. For example, let's check what namespace we're currently in by typing `*ns*` in the REPL and then hitting `shift-enter`. The result should look something like the following:
 
