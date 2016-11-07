@@ -10,7 +10,7 @@ A less known option is to use Postgres [NOTIFY](https://www.postgresql.org/docs/
 
 This post will walk you through configuring a Luminus app to listen for Postgres notification, and broadcast them to the connected clients over a WebSocket.
 
-##### prerequisites
+*prerequisites:*
 
 * [JDK](http://www.azul.com/downloads/zulu/)
 * [Leiningen](http://leiningen.org/)
@@ -180,7 +180,7 @@ Let's start the application by running `lein run` in the terminal. Once it start
 We can now test that adding a new message produces the notification:
 
 ```
-(add-message! {:message "hello world"})
+(add-message! {:event "hello world"})
 ```
 
 One the function runs, we should see something like the following printed in the terminal as the message is added to the database:
@@ -273,9 +273,9 @@ Next, we'll add a corresponding subscription to see the current messages in the 
 
 ```clojure    
 (reg-sub
-  :messages
+  :events
   (fn [db _]
-    (:messages db)))
+    (:events db)))
 ```
 
 #### WebSocket connection
