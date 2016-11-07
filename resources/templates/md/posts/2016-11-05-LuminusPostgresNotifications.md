@@ -8,7 +8,17 @@ A common solution to this problem is to use an external queue service that each 
 
 A less known option is to use Postgres [NOTIFY](https://www.postgresql.org/docs/9.5/static/sql-notify.html) command to send push notifications from the database. This allows multiple instances of the application can subscribe directly to the database to listen for events.
 
-This post will walk you through configuring a Luminus app to listen for Postgres notification, and broadcast them to the connected clients over a WebSocket. Let's start by creating a new project for our app:
+This post will walk you through configuring a Luminus app to listen for Postgres notification, and broadcast them to the connected clients over a WebSocket.
+
+##### prerequisites
+
+* [JDK](http://www.azul.com/downloads/zulu/)
+* [Leiningen](http://leiningen.org/)
+* [PostgreSQL](https://www.postgresql.org/)
+
+
+
+Let's start by creating a new project for our app:
 
 ```
 lein new luminus pg-feed-demo +postgres +re-frame
