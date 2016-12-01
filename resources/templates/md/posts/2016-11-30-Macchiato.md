@@ -56,19 +56,20 @@ One way around this is to use the cluster module that spins up a single listenin
 
 ```clojure
 (defstate env :start (config/env))
+
 (defstate http :start (js/require "http"))
 
 (defn app []
   (mount/start)
   (let [host (or (:host env) "127.0.0.1")
-        port (or (js/parseInt (:port env)) 3000)]
+        port (or (some-> env :port js/parseInt) 3000)]
     (-> @http
         (.createServer
           (handler
             router
             {:cookies {:signed? true}
              :session {:store (mem/memory-store)}}))
-        (.listen port host #(info "app started on" host ":" port)))))
+        (.listen port host #(info "{{name}} started on" host ":" port)))))
 
 (defn start-workers [os cluster]
   (dotimes [_ (-> os .cpus .-length)]
