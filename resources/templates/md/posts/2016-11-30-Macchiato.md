@@ -8,22 +8,22 @@ First, let's look at some of the reasons for running ClojureScript on the server
 
 However, there are situations where the JVM might not be a good fit. It's a complex piece of technology that requires experience to use effectively. It has a fairly large footprint even from small applications. The startup times can be problematic, especially when it comes to loading Clojure runtime.
 
-Meanwhile, Node.js also happens to be a popular platform with a large ecosystem around it. It requires far less resources for some types of applications, has very fast startup times, and its ecosystem is familiar to many JavaScript developers.
+Meanwhile, Node.js also happens to be a popular platform with a large ecosystem around it. It requires far less resources for certain types of applications, has very fast startup times, and its ecosystem is familiar to many JavaScript developers.
 
 Another appeal for Node based servers comes from building full stack ClojureScript single-page applications, since using Node on the server facilitates server-side rendering for any React based libraries.
 
-While a there are few existing experiments using ClojureScript on Node, such as [Dog Fort](https://github.com/whamtet/dogfort), none of these appear to be actively maintained. Since ClojureScript and its ecosystem have evolved in the meantime, I wanted to create a fresh stack using the latest tools and best practices.
+While there are a few existing experiments using ClojureScript on Node, such as [Dog Fort](https://github.com/whamtet/dogfort), none of these appear to be actively maintained. Since ClojureScript and its ecosystem have evolved in the meantime, I wanted to create a fresh stack using the latest tools and best practices.
 
 ### Overview
 
-My goal for Macchiato is to provide a stack similar to Ring based around the existing Node ecosystem, and a development environment similar to what's available for Clojure on the JVM.
+My goal for Macchiato is to provide a stack modeled on Ring based around the existing Node ecosystem, and a development environment similar to what's available for Clojure on the JVM.
 
 #### The Stack
 
-I think it makes sense to embrace the Node ecosystem and leverage existing modules whenever possible. For example, Ring style cookies map directly to the [cookies](https://www.npmjs.com/package/cookies) NPM module. Conversely, there are a number of mature ClojureScript libraries available as well, such as [Timbre](https://github.com/ptaoussanis/timbre),
+I think it makes sense to embrace the Node ecosystem and leverage the existing modules whenever possible. For example, Ring style cookies map directly to the [cookies](https://www.npmjs.com/package/cookies) NPM module. Conversely, there are a number of excellent ClojureScript libraries available as well, such as [Timbre](https://github.com/ptaoussanis/timbre),
  [Bidi](https://github.com/juxt/bidi/), and [Mount](https://github.com/tolitius/mount).
 
-I used a Ring inspired model where I created [wrappers around Node HTTP request and response objects](https://github.com/macchiato-framework/macchiato-http/blob/master/src/macchiato/http.cljs). This allowed adapting parts of Ring, such as the session store, with minimal changes.
+I used a Ring inspired model where I created [wrappers around Node HTTP request and response objects](https://github.com/macchiato-framework/macchiato-http/blob/master/src/macchiato/http.cljs). This allowed adapting parts of Ring, such as its session store implementation, with minimal changes.
 
 The `ClientRequest` object is translated to a Clojure map, and the response map is written to the `ServerResponse` object. The request handler is implemented as follows:
 
@@ -44,7 +44,7 @@ The `ClientRequest` object is translated to a Clojure map, and the response map 
       (handler-fn (req->map req res opts) (response req res opts)))))
 ```
 
-The `handler` accepts a `handler-fn` function that's passed the request map produced by the `req->map` helper. The `handler-fn` is expected to return a request handler function that will be used to generate the response. This function should accept the request map and the `response` call back function that writes the response map to the `ServerResponse` object.
+The `handler` accepts a `handler-fn` function that's passed the request map produced by the `req->map` helper. The `handler-fn` is expected to return a request handler function that will be used to generate the response. This function should accept the request map and the `response` call back function that writes the response map to the `ServerResponse` object. The `IHTTPResponseWriter` protocol is used to serialize different kinds of responses.
 
 #### Concurrent Request Handling
 
@@ -55,27 +55,33 @@ Since Node is single threaded, long running request handlers block the server un
 One way around this is to use the cluster module that spins up a single listening process that forks child processes and dispatches the requests to them. Setting this up is pretty straight forward: 
 
 ```clojure
+(defstate env :start (config/env))
 (defstate http :start (js/require "http"))
 
 (defn app []
-  (let [host   (or (.-HOST (.-env js/process)) "127.0.0.1")
-        port   (or (.-PORT (.-env js/process)) 3000)]
-    (mount/start)
+  (mount/start)
+  (let [host (or (:host env) "127.0.0.1")
+        port (or (js/parseInt (:port env)) 3000)]
     (-> @http
-          (.createServer (handler router))
-          (.listen port host #(info "started on" host ":" port)))))
+        (.createServer
+          (handler
+            router
+            {:cookies {:signed? true}
+             :session {:store (mem/memory-store)}}))
+        (.listen port host #(info "app started on" host ":" port)))))
 
-(defn start-workers [cluster]
-  (dotimes [_ (-> (js/require "os") .cpus .-length)]
+(defn start-workers [os cluster]
+  (dotimes [_ (-> os .cpus .-length)]
     (.fork cluster))
   (.on cluster "exit"
        (fn [worker code signal]
          (info "worker terminated" (-> worker .-process .-pid)))))
 
 (defn main [& args]
-  (let [cluster (js/require "cluster")]
+  (let [os      (js/require "os")
+        cluster (js/require "cluster")]
     (if (.-isMaster cluster)
-      (start-workers cluster)
+      (start-workers os cluster)
       (app))))
 ```
 
