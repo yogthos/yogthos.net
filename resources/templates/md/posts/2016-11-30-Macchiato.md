@@ -23,7 +23,7 @@ My goal for Macchiato is to provide a stack modeled on Ring based around the exi
 I think it makes sense to embrace the Node ecosystem and leverage the existing modules whenever possible. For example, Ring style cookies map directly to the [cookies](https://www.npmjs.com/package/cookies) NPM module. Conversely, there are a number of excellent ClojureScript libraries available as well, such as [Timbre](https://github.com/ptaoussanis/timbre),
  [Bidi](https://github.com/juxt/bidi/), and [Mount](https://github.com/tolitius/mount).
 
-I used a Ring inspired model where I created [wrappers around Node HTTP request and response objects](https://github.com/macchiato-framework/macchiato-http/blob/master/src/macchiato/http.cljs). This allowed adapting parts of Ring, such as its session store implementation, with minimal changes.
+I used a Ring inspired model where I created [wrappers around Node HTTP request and response objects](https://github.com/macchiato-framework/macchiato-core/blob/master/src/macchiato/http.cljs). This allowed adapting parts of Ring, such as its session store implementation, with minimal changes.
 
 The `ClientRequest` object is translated to a Clojure map, and the response map is written to the `ServerResponse` object. The request handler is implemented as follows:
 
