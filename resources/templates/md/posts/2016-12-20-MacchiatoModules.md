@@ -3,7 +3,19 @@
  :layout :post
  :tags ["clojurescript" "macchiato" "node"]}
  
- As I discussed in the last post, Ring middleware stack closely resembles modules in a framework.
+In my last post, I made the case that the HTTP middleware stack is the place where most reusable code should live.
+
+To see why that is so, let's consider some things that could potentially become modules in a framework.
+
+We could create an HTTP server module, a routing module, or perhaps a database module. However, let's consider what that would mean in practice.
+
+If something is a module, it must adhere to an existing specification. If the framework happens to define HTML templating modules, then all such modules must implement the same API.
+
+This precludes modules from behaving differently from user perspective.
+
+When we use libraries for these tasks, majority of work isn't in swapping out the dependency, but rewriting domain specific pieces such as HTML templates or SQL queries.
+ 
+As I discussed in the last post, Ring middleware stack closely resembles modules in a framework.
  
 However, one notable difference is that middleware functions aren't directly aware of one another. When the handler is passed to the middleware function, it has no way of knowing what other middleware might have been wrapped around the handler by the time it got to it.
 
