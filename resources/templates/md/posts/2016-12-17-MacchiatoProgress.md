@@ -1,6 +1,6 @@
 {:title "Frameworks, Foundations, and Macchiato"
  :layout :post
- :tags ["clojurescript" "node"]}
+ :tags ["clojurescript" "macchiato" "node"]}
 
 I've been making steady progress on Macchiato in the past weeks. This post will discuss some of my thought process and design decisions I settled on during this time.
 

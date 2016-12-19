@@ -1,6 +1,6 @@
 {:title "Macchiato: ClojureScript Arrives on the Server"
  :layout :post
- :tags ["clojurescript" "node"]}
+ :tags ["clojurescript" "macchiato" "node"]}
  
  I recently started the [Macchiato](https://github.com/macchiato-framework) project to provide a platform for building ClojureScript based apps on top Node.js.
   
