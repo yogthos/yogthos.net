@@ -161,8 +161,3 @@ I think that the approach of using metadata provides an elegant view into the st
 Another advantage of using metadata is that it makes the mechanism user extensible. If you're using a piece of middleware that doesn't have the metadata you need, you can always set it yourself.
 
 The latest release of Macchiato has all the core middleware tagged with the appropriate metadata, and [macchiato-defaults](https://github.com/macchiato-framework/macchiato-defaults) generates a handler that has the `:macchiato/middleware` key that contains the vector of the middleware that was applied.
-
- 
-  
-  
-  
