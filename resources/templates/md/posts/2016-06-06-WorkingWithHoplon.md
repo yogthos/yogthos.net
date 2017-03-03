@@ -154,3 +154,7 @@ Overall, I think that Hoplon is often overlooked when ClojureScript UI libraries
 
 If, like me, you've been avoiding Hoplon because you were under the impression that you have to use it in a specific way, then I strongly urge you to give it another look.
 
+#### Update
+
+Luminus now provides a Hoplon profile using the `+hoplon` flag.
+
