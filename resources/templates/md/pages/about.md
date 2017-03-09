@@ -14,12 +14,13 @@ build better software together. To that end I'd like share some of my projects w
 ### My projects
 
 * [Clojure Distilled](http://yogthos.github.io/ClojureDistilled.html) - my Clojure primer
-* [Luminus framework](http://www.luminusweb.net) - web framework for Clojure
+* [Luminus](http://www.luminusweb.net) - web framework for Clojure
+* [Macchiato](https://github.com/macchiato-framework) - web framework for ClojureScript/Node.js
 * [Selmer](https://github.com/yogthos/Selmer) - fast Django inspired template system in Clojure
 * [clj-pdf](https://github.com/yogthos/clj-pdf) - PDF generation library for Clojure
 * [instant-pdf](http://yogthos.net/instant-pdf) - RESTful PDF service
 * [markdown-clj](https://github.com/yogthos/markdown-clj) - Markdown parser for Clojure and ClojureScript
-* [reagent-forms](https://github.com/reagent-project/reagent-forms) - form data bindings for [Reagent](https://github.com/reagent-project/reagent)
+* [Memory Hole](https://github.com/yogthos/memory-hole) - support issue organizer
 
 ### Publications
 
