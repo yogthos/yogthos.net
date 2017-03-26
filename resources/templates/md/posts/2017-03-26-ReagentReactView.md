@@ -32,14 +32,14 @@ Now that we have a way to generate some players, let's add a function to generat
 
 ```clojure
 (defn generate-fake-game []
-  {:id                (-> js/faker .-random (.uuid))
-   :clock             0
-   :score             {:home 0 :away 0}
-   :teams             {:home (-> js/faker .-address (.city))
-                       :away (-> js/faker .-address (.city))}
-   :outrageous-ackles 0
-   :cards             {:yellow 0 :read 0}
-   :players           (mapv generate-fake-player (range 4))})
+  {:id                 (-> js/faker .-random (.uuid))
+   :clock              0
+   :score              {:home 0 :away 0}
+   :teams              {:home (-> js/faker .-address (.city))
+                        :away (-> js/faker .-address (.city))}
+   :outrageous-tackles 0
+   :cards              {:yellow 0 :read 0}
+   :players            (mapv generate-fake-player (range 4))})
 ```
 
 With the functions to generate the players and the games in place, we'll now add a function to generate a set of initial game states:
@@ -72,7 +72,7 @@ The next step is to write the functions to update the games and players:
                   (maybe-update 5 [:score :away] inc)
                   (maybe-update 8 [:cards :yellow] inc)
                   (maybe-update 2 [:cards :red] inc)
-                  (maybe-update 10 [:outrageous-ackles] inc)
+                  (maybe-update 10 [:outrageous-tackles] inc)
                   (update-rand-player (rand-int 4))))
             %))
   (js/setTimeout update-games 1000))
@@ -110,7 +110,7 @@ Next, we'll write the components to display the players and the games:
    [:td.u-center (:clock game)]
    [:td.u-center (-> game :score :home) "-" (-> game :score :away)]
    [:td.cell--teams (-> game :teams :home) "-" (-> game :teams :away)]
-   [:td.u-center (:outrageous-ackles game)]
+   [:td.u-center (:outrageous-tackles game)]
    [:td
     [:div.cards
      [:div.cards__card.cards__card--yellow (-> game :cards :yellow)]
@@ -194,7 +194,7 @@ Let's update the view logic as follows:
    [:td.u-center (:clock @game)]
    [:td.u-center (-> @game :score :home) "-" (-> @game :score :away)]
    [:td.cell--teams (-> @game :teams :home) "-" (-> @game :teams :away)]
-   [:td.u-center (:outrageous-ackles @game)]
+   [:td.u-center (:outrageous-tackles @game)]
    [:td
     [:div.cards
      [:div.cards__card.cards__card--yellow (-> @game :cards :yellow)]
@@ -240,3 +240,9 @@ We can see that this makes a huge difference. We're now spending roughly half th
 This benchmark shows that ClojureScript with Reagent provides a compelling alternative to JavaScript offerings such as React.js and Vue.js.
 
 Reagent allows writing succinct solutions that perform well out of the box. It also provides us with tools to intuitively do significant optimizations.
+
+Some of the advantages of using ClojureScript include 
+
+live code reloading with [Figwheel](https://github.com/bhauman/lein-figwheel)
+
+[dead code elimination](http://swannodette.github.io/2015/01/06/the-false-promise-of-javascript-microlibs), minificaiton, and optimization for free.
