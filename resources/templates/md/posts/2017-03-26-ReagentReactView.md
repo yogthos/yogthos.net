@@ -321,4 +321,4 @@ Another advantage is that ClojureScript is backed by immutable data structures b
 
 Finally, ClojureScript compiler can do many optimizations, such as [dead code elimination](http://swannodette.github.io/2015/01/06/the-false-promise-of-javascript-microlibs), that are difficult to do with JavaScript. I highly recommend the [Now What?](https://www.youtube.com/watch?v=cH4ZJAKZHjQ) talk by David Nolen that goes into more details regarding this.
 
-Overall, I'm pleased to see that ClojureScript and Reagent perform so well when stacked up against native JavaScript libraries. It's hard to overstate the fact that a library built on top of React.js in a transpiled language outperforms the original library.
+Overall, I'm pleased to see that ClojureScript and Reagent perform so well when stacked up against native JavaScript libraries. It's hard to overstate the fact that a ClojureScript library built on top of React.js can outperform React.js itself.
