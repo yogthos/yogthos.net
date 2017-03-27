@@ -196,7 +196,7 @@ Here are the results for React.js and Vue.js running in the same environment for
 
 As you can see, the naive Reagent version spends about double the time scripting compared to React.js, and about four times as long rendering.
 
-The reason is that we're dereferencing the `games` atom at top level. This forces all the child components to be reevaluated whenever the sate of any game changes.
+The reason is that we're dereferencing the `games` atom at top level. This forces the top level component to be reevaluated whenever the sate of any game changes.
 
 Reagent provides a mechanism for dealing with this problem in the form of cursors. A cursor allows subscribing to changes at a specified path within the atom. A component that dereferences a cursor will only be updated when the data the cursor points to changes. This allows us to granularly control what components will be repainted when a particular piece of data changes in the `games` atom. Let's update the view logic as follows:
 
@@ -206,7 +206,9 @@ Reagent provides a mechanism for dealing with this problem in the form of cursor
    [:div.player
     [:p.player__name
      [:span (:name @player)]
-     [:span.u-small (if (:invited-next-week? @player) "Doing well" "Not coming again")]]
+     [:span.u-small
+      (if (:invited-next-week? @player)
+        "Doing well" "Not coming again")]]
     [:div {:class-name (str "player__effort "
                             (if (< (:effort-level @player) 5)
                               "player__effort--low"
