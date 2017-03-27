@@ -1,6 +1,6 @@
 {:title "Comparing Reagent to React.js and Vue.js for dynamic tabular data", :layout :post, :tags ["clojurescript" "reagent"]}
 
-I recently ran across a [comparison of React.js to Vue.js for rendering dynamic tabular data](https://engineering.footballradar.com/a-fairer-vue-of-react-comparing-react-to-vue-for-dynamic-tabular-data-part-2/?utm_content=buffer0e901), and I got curious to see how Reagent would stack up against them.
+I recently ran across a [comparison of React.js to Vue.js for rendering dynamic tabular data](https://engineering.footballradar.com/a-fairer-vue-of-react-comparing-react-to-vue-for-dynamic-tabular-data-part-2/?utm_content=buffer0e901), and I got curious to see how [Reagent](http://reagent-project.github.io/) would stack up against them.
 
 The benchmark simulates a view of football games represented by a table. Each row in the table represents the state of a particular game. The game states are updated once a second triggering UI repaints.
 
