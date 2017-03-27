@@ -6,11 +6,11 @@ I recently ran across a [comparison of React.js to Vue.js for rendering dynamic 
 
 The benchmark simulates a view of football games represented by a table. Each row in the table represents the state of a particular game. The game states are updated once a second triggering UI repaints.
 
-I structured the application similarly to how React.js and Vue.js versions in the original benchmark. The `football.data` namespace handles the business logic, while the `football.core` handles the view.
+I structured the application similarly to the way that React.js version was structured in the original benchmark. The application has a `football.data` namespace to handle the business logic, and a `football.core` namespace to render the view.
 
 ### Implementing the Business Logic
 
-Let's start by implementing the business logic. We'll add a new namespace called `football.data` and declare an atom to hold the state of the games:
+Let's start by implementing the business logic in the `football.data` namespace. First, we'll need to provide a container to hold the state of the games. To do that we'll create a Reagent atom called `games`:
 
 ```clojure
 (ns football.data
@@ -28,9 +28,9 @@ Next, we'll add a function to generate the fake players:
    :invited-next-week? (> (rand) 0.5)})
 ```
 
-You can see that we're using JavaScript interop to leverage the Faker.js library for generating the player names. One nice aspect of working with ClojureScript is that JavaScript interop is rather seamless.
+You can see that we're using JavaScript interop to leverage the [Faker.js](https://github.com/marak/Faker.js/) library for generating the player names. One nice aspect of working with ClojureScript is that JavaScript interop tends to be seamless.
 
-Now that we have a way to generate some players, let's add a function to generate fake games:
+Now that we have a way to generate the players, let's add a function to generate fake games:
 
 ```clojure
 (defn generate-fake-game []
@@ -51,7 +51,7 @@ With the functions to generate the players and the games in place, we'll now add
   (reset! games (mapv generate-fake-game (range game-count))))
 ```
 
-The next step is to write the functions to update the games and players to simulate the progression of the games:
+The next step is to write the functions to update the games and players to simulate the progression of the games. This code translates pretty much directly from the JavaScript version:
 
 ```clojure
 (defn maybe-update [game prob path f]
@@ -75,9 +75,7 @@ The next step is to write the functions to update the games and players to simul
       (update-rand-player (rand-int 4))))
 ```
 
-All we have to do is take the current state of the game, update the values, and return the new state.
-
-The last thing we need to do is add the functions to update the game states at a specified interval. The original code uses Rx.js to accomplish this, but it's just as easy to do using the `setTimeout` function with Reagent:
+The last thing we need to do is add the functions to update the game states at a specified interval. The original code uses [Rx.js](https://github.com/Reactive-Extensions/RxJS) to accomplish this, but it's just as easy to do using the `setTimeout` function with Reagent:
 
 ```clojure
 (defn update-game-at-interval [interval idx]
@@ -93,7 +91,7 @@ The last thing we need to do is add the functions to update the game states at a
                    (* i event-interval))))
 ```
 
-The `update-games` function swaps the state of each game, then sets up a timeout for the recurring updates using the `update-game-at-interval` function.
+The `update-games` function updates the state of each game, then sets up a timeout for the recurring updates using the `update-game-at-interval` function.
 
 ### Implementing the View
 
@@ -157,11 +155,11 @@ Next, we'll write the components to display the players and the games:
    [games-component]])
 ```
 
-You can see that the HTML in components are simply represented as Clojure vectors. Since s-expressions cleanly map to HTML, there's no need to use a DSL when using Reagent. You'll also notice that components can be nested within one another same way as plain HTML elements.
+You can see that the HTML in Reagent components is simply represented as Clojure vectors. Since s-expressions cleanly map to HTML, there's no need to use an additional DSL. You'll also notice that components can be nested within one another same way as plain HTML elements.
 
-The `games-table-component` accepts the state of the games as a value and passes it to the `games-component` to render the rows.
+You'll note that the `games-component` dereferences the `data/games` atom using the `@` notation. Dereferencing simply means that we'd like to view the current state of a mutable variable.
 
-Reagent atoms are reactive, and listeners are created when the atoms are dereferenced using the `@` notation. Whenever the state of the atom changes, any functions that are observing the atom will be notified of the change.
+Reagent atoms are reactive, and listeners are created when the atoms are dereferenced. Whenever the state of the atom changes, any functions that are observing the atom will be notified of the change.
 
 In our case, changes in the state of the `games` atom will trigger the `games-component` function to be evaluated. The function will pass the current state of the games down to its child components, and this will trigger any necessary repaints in the UI.
 
@@ -182,7 +180,7 @@ Finally, we have a bit of code to create the root component represented by the `
   (mount-root))
 ```
 
-We now have a naive implementation of the benchmark using Reagent. Next, let's take a look at how it performs.
+We now have a naive implementation of the benchmark using Reagent. The entire project is [available on GitHub](https://github.com/yogthos/ReagentPerf). Next, let's take a look at how it performs.
 
 ### Profiling with Chrome
 
@@ -200,7 +198,7 @@ As you can see, the naive Reagent version spends about double the time scripting
 
 The reason is that we're dereferencing the `games` atom at top level. This forces all the child components to be reevaluated whenever the sate of any game changes.
 
-Reagent provides a mechanism for dealing with this problem in a form of cursors. A cursor allows subscribing to changes at a specified path within a Reagent atom. A component that dereferences a cursor will only be updated when the data the cursor points to changes. This allows us to granularly control what components will be repainted when a particular piece of data changes in the `games` atom. Let's update the view logic as follows:
+Reagent provides a mechanism for dealing with this problem in the form of cursors. A cursor allows subscribing to changes at a specified path within the atom. A component that dereferences a cursor will only be updated when the data the cursor points to changes. This allows us to granularly control what components will be repainted when a particular piece of data changes in the `games` atom. Let's update the view logic as follows:
 
 ```clojure
 (defn player-component [player]
@@ -254,23 +252,23 @@ Reagent provides a mechanism for dealing with this problem in a form of cursors.
   [games-table-component])
 ```
 
-The above version creates a cursor for each game in the `games-components`. The `game-component` in turn creates a cursor for each player. This way only the components that actually need updating end up being rendered as the state of the games is updated. Let's run the benchmark again to see how much impact this has on performance:
+The above version creates a cursor for each game in the `games-components`. The `game-component` in turn creates a cursor for each player. This way only the components that actually need updating end up being rendered as the state of the games is updated. Let's profile the application again to see how much impact this has on its performance:
 
 ![Reagent Results](/img/reagent-perf/reagent-cursor.png)
 
-We can see that this makes a huge difference. The performance of the Reagent code using cursors now looks close to the Vue.js version.
+The performance of the Reagent code using cursors now looks similar to that of the Vue.js implementation. You can see the entire source for the updated version [here](https://github.com/yogthos/ReagentPerf/tree/reagent-cursors).
 
 ### Conclusion
 
-This benchmark shows that ClojureScript with Reagent provides a compelling alternative to JavaScript offerings such as React.js and Vue.js.
+In this post we saw that ClojureScript with Reagent provides a compelling alternative to JavaScript offerings such as React.js and Vue.js.
 
-Reagent allows writing succinct solutions that perform well out of the box. It also provides us with tools to intuitively reason about what parts of the view are updated.
+Reagent allows writing succinct solutions that perform as well as those implemented using native JavaScript libraries. It also provides us with tools to intuitively reason about what parts of the view are going to be updated.
 
-Likewise, we get many benefits for free simply by using ClojureScript.
+Likewise, we get many benefits by simply switching from using JavaScript to ClojureScript.
 
-We already saw that we didn't need any additional syntax, such as JSX, to represent HTML elements. In general, I find ClojureScript to have much less noise than equivalent JavaScript code.
+For example, We already saw that we didn't need any additional syntax, such as JSX, to represent HTML elements. Since HTML templates are represented using regular data structures, they follows the same rules as any other code. This allows us to transform them just like we would any other data in our project.
 
-For example, consider the implementation of the `updateGame` function in the original JavaScript version:
+In general, I find ClojureScript to be much more consistent and less noisy than equivalent JavaScript code. Consider the implementation of the `updateGame` function in the original JavaScript version:
 
 ```javascript
 function updateGame(game) {
@@ -296,7 +294,7 @@ function updateGame(game) {
 }
 ```
 
-Now, let's compare it with the equivalent ClojureScript code:
+Let's compare it with the equivalent ClojureScript code:
 
 ```clojure
 (defn update-rand-player [game idx]
@@ -315,8 +313,10 @@ Now, let's compare it with the equivalent ClojureScript code:
       (update-rand-player (rand-int 4))))
 ```
 
-ClojureScript version has a lot less syntactic noise. I find this has a direct impact on correctness. The more quirks there are in code, the more likely it is that I end up misreading the intent. Noisy syntax often results in situations where code looks like it's doing one thing, while it's actually doing something different.
+ClojureScript version has a lot less syntactic noise, and I find this has direct impact on my ability to reason about the code. The more quirks there are, the more likely I am to misread the intent. Noisy syntax results in situations where code looks like it's doing one thing, while it's actually doing something subtly different.
 
-Another advantage is that ClojureScript is backed by immutable data structures by default. Since immutability is pervasive as opposed to opt-in, it allows for tooling to be designed with it in mind. For example, [Figwheel](https://github.com/bhauman/lein-figwheel) plugin relies on this to provide live hot reloading in the browser.
+Another advantage is that ClojureScript is backed by immutable data structures by default. Since immutability is pervasive as opposed to opt-in, it allows for tooling to be designed with it in mind. For example, [Figwheel](https://github.com/bhauman/lein-figwheel) plugin relies on this property to provide live hot reloading in the browser.
 
-Finally, ClojureScript compiler can do many optimizations, such as [dead code elimination](http://swannodette.github.io/2015/01/06/the-false-promise-of-javascript-microlibs), that are difficult to do with JavaScript.
+Finally, ClojureScript compiler can do many optimizations, such as [dead code elimination](http://swannodette.github.io/2015/01/06/the-false-promise-of-javascript-microlibs), that are difficult to do with JavaScript. I highly recommend the [Now What?](https://www.youtube.com/watch?v=cH4ZJAKZHjQ) talk by David Nolen that goes into more details regarding this.
+
+Overall, I'm pleased to see that ClojureScript and Reagent perform so well when stacked up against native JavaScript libraries. It's hard to overstate the fact that a library built on top of React.js in a transpiled language outperforms the original library.
