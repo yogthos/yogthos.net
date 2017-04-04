@@ -1,6 +1,7 @@
 body {
-  font-family: 'Lato', sans-serif;
+  font-family: 'Merriweather', 'Lato', sans-serif;
   margin-top: 40px;
+  text-rendering: geometricPrecision;
 }
 @media (min-width: 100px) and (max-width: 399px) {
   body {
@@ -110,25 +111,29 @@ h3,
 h4,
 ul.pager {
   font-family: 'Open Sans Condensed', sans-serif;
-  text-transform: uppercase;
   font-weight: 700 !important;
+}
+body > h1 {
+  display: none;
 }
 #post, #page, .tags, .archives .date {
   padding: 20px;
   /* font-family: 'Vollkorn', sans-serif; */
-  font-family: 'Lucida Grande', Verdana, 'Bitstream Vera Sans', Arial, sans-serif;
-  color: #333;
-  font-size: 13pt;
+  font-family: 'Merriweather', 'Lucida Grande', Verdana, 'Bitstream Vera Sans', Arial, sans-serif;
+  color: #3A4145;
+  letter-spacing: 0.01rem;
+  font-size: 1.8rem;
+  line-height: 1.75em;
   text-rendering: optimizeLegibility;
 }
 .archives .post-date {
-  width: 100px;
+  width: 150px;
 }
 .archives .post-date {
   padding:0px;
 }
 #sidebar {
-  padding: 20px;
+  padding: 20px;  
 }
 
 #sidebar a, .archives a {
@@ -247,12 +252,14 @@ body,
   .container {
     width: 100%;
     max-width: 100%;
+    padding-left: 50px;
   }
 }
 @media (min-width: 1200px) {
   .container {
     width: 100%;
     max-width: 100%;
+    padding-left: 50px;
   }
 }
 .row {
