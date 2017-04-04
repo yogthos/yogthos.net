@@ -13,7 +13,7 @@ build better software together. To that end I'd like share some of my projects w
 
 ### My projects
 
-* [Clojure Distilled](http://yogthos.github.io/ClojureDistilled.html) - my Clojure primer
+* [Clojure Distilled](http://yogthos.github.io/ClojureDistilled.html) - a Clojure primer
 * [Luminus](http://www.luminusweb.net) - web framework for Clojure
 * [Macchiato](https://github.com/macchiato-framework) - web framework for ClojureScript/Node.js
 * [Selmer](https://github.com/yogthos/Selmer) - fast Django inspired template system in Clojure
