@@ -164,6 +164,7 @@ Next, we'll add functions that will allow us to add and remove listeners for a g
 Let's start the application by running `lein run` in the terminal. Once it starts, the nREPL will become available at `localhost:7000`. When the REPL is connected, run the following code in it to start the database connection and register a listener:
 
 ```clojure
+(require :reload 'pg-feed-demo.db.core)
 (in-ns 'pg-feed-demo.db.core)
 
 (mount.core/start
@@ -172,7 +173,7 @@ Let's start the application by running `lein run` in the terminal. Once it start
                   
 (add-listener
   notifications-connection
-  "messages"
+  "events"
   (fn [& args]
     (apply println "got message:" args)))
 ```
@@ -180,7 +181,7 @@ Let's start the application by running `lein run` in the terminal. Once it start
 We can now test that adding a new message produces the notification:
 
 ```
-(add-message! {:event "hello world"})
+(event! {:event "hello world"})
 ```
 
 One the function runs, we should see something like the following printed in the terminal as the message is added to the database:
@@ -216,7 +217,7 @@ We're now ready to setup the WebSocket connection that will be used to push noti
           db/notifications-connection
           event-listener))
 
-(defn persist-event! [_event]
+(defn persist-event! [_ event]
   (db/event! {:event event}))
 
 (defn connect! [channel]
