@@ -258,6 +258,8 @@ The client will need to track the currently available messages, allow the user t
 Let's run Figwheel to start the ClojureScript compiler before we start working on the client-side code by running the following command:
 
     lein figwheel
+    
+Once Figwheel compiler starts, navigate to [http://localhost:3000](http://localhost:3000) in the browser to load the client-side of the application.
 
 #### Re-frame events
 
