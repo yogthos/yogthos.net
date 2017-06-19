@@ -219,4 +219,4 @@ We should now be able to open multiple browser windows and any messages typed in
 
 ### Conclusion
 
-As you can see, it's very easy to setup basic client-server communication between HTTP Kit and ClojureScript. While you may wish to use one of the libraries mentioned earlier for more sophisticated apps, it's certainly not necessary in many cases. The complete source for the example can be found on [GitHub](https://github.com/luminus-framework/multi-client-ws).
+As you can see, it's very easy to setup basic client-server communication between HTTP Kit and ClojureScript. While you may wish to use one of the libraries mentioned earlier for more sophisticated apps, it's certainly not necessary in many cases. The complete source for the example can be found on [GitHub](https://github.com/luminus-framework/examples/tree/master/multi-client-ws-http-kit).
