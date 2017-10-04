@@ -1,4 +1,4 @@
-{:title "Moving forward by letting go", :layout :post, :tags ["clojure"]}
+{:title "Moving Forward by Letting Go", :layout :post, :tags ["clojure"]}
 
 Lisps are famous for having powerful metaprogramming facilities derived from their homoiconic nature. Core language consists of a small set of built in primitives, and the rest is implemented using macros and functions in the standard library.
 
