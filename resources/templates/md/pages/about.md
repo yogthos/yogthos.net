@@ -22,6 +22,8 @@ build better software together. To that end I'd like share some of my projects w
 * [markdown-clj](https://github.com/yogthos/markdown-clj) - Markdown parser for Clojure and ClojureScript
 * [Memory Hole](https://github.com/yogthos/memory-hole) - support issue organizer
 
+If you've found my projects useful, please consider supporting me on [Patreon](https://www.patreon.com/yogthos).
+
 ### Publications
 
 <div class="book">
