@@ -178,4 +178,4 @@ I'm an error
 
 We can see that the error occurred on line 27 of the `app.core` namespace which is indeed where the code that throws the exception resides. The full listing for the example is available on [GitHub](https://github.com/yogthos/clojurescript-error-reporting-example).
 
-While the example in this post illustrates bare bones exception handling, we can do more interesting things in a real world application. For example, [re-frame](https://www.webjars.org/) based application could send the entire state of the re-frame database at the time of the error to the server. This allows us to put the application in the exact state that caused the error when debugging the problem.
+While the example in this post illustrates bare bones exception handling, we can do more interesting things in a real world application. For example, [re-frame](https://github.com/Day8/re-frame) based application could send the entire state of the re-frame database at the time of the error to the server. This allows us to put the application in the exact state that caused the error when debugging the problem.
