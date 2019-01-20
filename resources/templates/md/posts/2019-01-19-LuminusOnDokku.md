@@ -144,6 +144,48 @@ Picked up JAVA_TOOL_OPTIONS: -Xmx300m -Xss512k -XX:CICompilerCount=2 -Dfile.enco
 
 You should now be able to check your application in the browser by navigating to `http://<server name>`.
 
+### Troubleshooting the database
+
+The startup logs for the application indicate that it was able to connect to the database and run the migrations successfully. Let's confirm this is the case by connecting a `psql` shell to the database container on the server.
+
+```
+dokku postgres:connect mydb
+mydb=# \d
+               List of relations
+ Schema |       Name        | Type  |  Owner
+--------+-------------------+-------+----------
+ public | schema_migrations | table | postgres
+ public | users             | table | postgres
+(2 rows)
+```
+
+We can see that the database contains the `schema_migrations` table and the `users` table that were created when the app migrations ran.
+
+Sometimes it might be useful to connect a more advanced client such as [DBeaver](https://dbeaver.io/). This can done by exposing the database on the server using the following command.
+
+```
+sudo dokku postgres:expose mydb 5000
+```
+
+Next, we'll enter the container for the application to get the database connection details.
+
+```
+dokku enter myapp web
+echo $DATABASE_URL
+```
+
+The `DATABASE_URL` environment variable in the container will contain the connection string that looks as follows.
+
+```
+postgres://postgres:<password>@dokku-postgres-mydb:5432/mydb
+```
+
+We can now map the port to the local machine using SSH, and connect to the database as if it was running on the local machine using the connection settings above. 
+
+```
+ssh -L 5432:localhost:5000 <server name>
+```
+
 ### Set up HTTPS
 
 As the last step we'll set up HTTPS for the application using [dokku-letsencrypt](https://github.com/dokku/dokku-letsencrypt) plugin. We'll set the app to run on the root domain on the server.
