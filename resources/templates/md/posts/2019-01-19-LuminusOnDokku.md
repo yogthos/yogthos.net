@@ -78,11 +78,14 @@ Next, we need to update `env/prod/resources/logback.xml` to use `STDOUT` for the
 
 ### Deploy the application to Dokku
 
-We're now ready to deploy the app. Let's create a Git repo and add the app contents to it:
+We're now ready to deploy the app. First, we'll need to create a Git repo and add the app contents to it.
 
 1. `git init`
 2. `git add .gitignore Procfile project.clj README.md src/* env/* test/* resources/*`
 3. `git commit -a -m "initial commit"`
+
+Next, we'll add the remote for the Dokku repository on the server and push the project to the remote. Dokku will automatically build the project once it's pushed, and deploy the application when the build is successful.
+
 1. `git remote add dokku dokku@<server name>:myapp`
 2. `git push dokku master`
 
