@@ -8,7 +8,7 @@ Cloud platforms, such as AWS, are a popular choice for deploying large scale sol
 
 Let's take a look at what's involved in provisioning a Digital Ocean droplet with Dokku and deploying a Luminus web app to it.
 
-### set up the server
+### Set up the server
 
 Let's create a droplet with Ubuntu LTS (18.0.4 at the time of writing) and SSH into it. We'll need to add new APT repositories before we install Dokku.
  
