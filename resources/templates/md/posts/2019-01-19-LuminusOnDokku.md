@@ -180,13 +180,13 @@ The `DATABASE_URL` environment variable in the container will contain the connec
 postgres://postgres:<password>@dokku-postgres-mydb:5432/mydb
 ```
 
-We can now map the port to the local machine using SSH, and connect to the database as if it was running on the local machine using the connection settings above. 
+We can now map the port to the local machine using SSH, and connect to the database as if it was running on the local machine using the connection settings above.
 
 ```
 ssh -L 5432:localhost:5000 <server name>
 ```
 
-### Set up HTTPS
+### Set up HTTPS using Let's Encrypt
 
 As the last step we'll set up HTTPS for the application using [dokku-letsencrypt](https://github.com/dokku/dokku-letsencrypt) plugin. We'll set the app to run on the root domain on the server.
 
