@@ -34,6 +34,11 @@ If you've found my projects useful, please consider supporting me on [Patreon](h
 [![Web Development With Clojure](http://yogthos.net/files/wdwc2.png)](https://pragprog.com/book/dswdcloj2/web-development-with-clojure-second-edition)
 </div>
 
+### Talks
+
+* [Transforming Enterprise Development With Clojure](https://www.youtube.com/watch?v=nItR5rwP4mY)
+* [Aviary: Clinical Collaboration Platform](https://www.youtube.com/watch?v=IekPZpfbdaI)
+
 ### Contact
 
 * <i class="fa fa-envelope"></i> dmitri.sotnikov [at] gmail.com
