@@ -74,7 +74,7 @@ First thing to do is to time our our loop:
 "Elapsed time: 212.646 msecs"
 "Elapsed time: 0.004 msecs"
 ```
-As can be expected the draw function eclipses the move function. So we'll focus on what's happening in our rendering code and see where the CPU time is being spent. Instead of guessing, let's profile the application using [VisualVM](http://visualvm.java.net/download.html), which should already be bundled with your JVM, and see what's happening.
+As can be expected the draw function eclipses the move function. So we'll focus on what's happening in our rendering code and see where the CPU time is being spent. Instead of guessing, let's profile the application using [VisualVM](https://visualvm.github.io/), which should already be bundled with your JVM, and see what's happening.
 
 <center>
 ![initial profiling](/files/profile1.png)
